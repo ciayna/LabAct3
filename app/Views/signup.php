@@ -18,11 +18,11 @@
               <!-- Sign In Form -->
               <form action="/register" method="post">
                 <div class="form-floating mb-3">
-                  <input type="text" class="form-control" value="<?= set_value('username')?>" name="username">
+                  <input type="text" class="form-control" value="<?= set_value('username')?>" name="username" placeholder="username">
                   <label for="floatingInput">Username</label>
                 </div>
                 <div class="form-floating mb-3">
-                  <input type="email" class="form-control" value="<?= set_value('email')?>" name="email">
+                  <input type="email" class="form-control" value="<?= set_value('email')?>" name="email" placeholder="email">
                   <label for="floatingEmail">Email</label>
                 </div>
                 <div class="form-floating mb-3">
@@ -33,7 +33,7 @@
                   <label for="usertype">User Type</label>
                 </div>
                 <div class="form-floating mb-3">
-                  <input type="password" class="form-control" name="password">
+                  <input type="password" class="form-control" name="password" placeholder="password">
                   <label for="floatingPassword">Password</label>
                 </div>
                 <div class="form-floating mb-3">

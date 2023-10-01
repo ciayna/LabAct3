@@ -1,3 +1,4 @@
 <?= $this->include('includeAdmin/top')?>
-<?= $this->include('includeAdmin/header')?>
+<?= $this->include('includeAdmin/navbar')?>
+<?= $this->include('includeAdmin/sidenav')?>
 <?= $this->include('includeAdmin/end')?>

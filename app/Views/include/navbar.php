@@ -11,7 +11,7 @@
                 <a href="" class="nav-item nav-link active">Home</a>
                 <a href="" class="nav-item nav-link">Service</a>
                 <a href="" class="nav-item nav-link">Contact</a>
-                <a href="" class="nav-item nav-link nav-contact bg-primary text-white px-5 ms-lg-5">Login <i class="bi bi-arrow-right"></i></a>
+                <a href="/signin" class="nav-item nav-link nav-contact bg-primary text-white px-5 ms-lg-5">Login <i class="bi bi-arrow-right"></i></a>
             </div>
         </div>
     </nav>

@@ -4,16 +4,49 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\UserModel;
+use App\Models\ProductModel;
 
 class UserController extends BaseController
 {
     public function index()
     {
-        return view('home');
+        if(!session()->get('isLoggedIn')){
+            return redirect()->to('/signin');
+        }
+        else{
+            $product = new ProductModel();
+            $data = [
+                'product' => $product->findAll(),
+            ];
+            return view('home', $data);
+        }
     }
+    public function productview()
+    {
+        if(!session()->get('isLoggedIn')){
+            return redirect()->to('/signin');
+        }
+        else{
+            $product = new ProductModel();
+            $data = [
+                'product' => $product->findAll(),
+            ];
+            return view('productview', $data);
+        }
+    }
+
     public function adminview()
     {
-        return view('admin');
+        if(!session()->get('isLoggedIn')){
+            return redirect()->to('/signin');
+        }
+        else{
+            $product = new ProductModel();
+            $data = [
+                'product' => $product->findAll(),
+            ];
+            return view('admin', $data);
+        }
     }
     public function registerview(){
         helper(['form']);
@@ -24,8 +57,8 @@ class UserController extends BaseController
     {
         helper(['form']);
         $rules = [
-            'username' => 'required|min_length[4]|max_length[100]',
-            'password' => 'valid_email|is_unique[users.email]',
+            'username' => 'required|min_length[4]|max_length[100]|is_unique[table_register.username]',
+            'email' => 'valid_email|is_unique[table_register.email]',
             'password' => 'required|min_length[4]|max_length[50]',
             'confirmpassword' => 'matches[password]'
         ];
@@ -37,7 +70,7 @@ class UserController extends BaseController
                 'password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT),
                 'usertype' => $this->request->getVar('usertype')
             ];
-            $userModel->save($data);
+            $userModel->save($data);   
             return redirect()->to('/signin');
         }
         else{
@@ -47,6 +80,7 @@ class UserController extends BaseController
     }
     public function Login()
     {
+        session()->remove(['id', 'username', 'isLoggedIn', 'usertype']);
         helper(['form']);
         echo view('signin');
     }
@@ -63,14 +97,22 @@ class UserController extends BaseController
         if($data){
             $pass = $data['password'];
             $authenticatePassword = password_verify($password, $pass); 
+
             if($authenticatePassword){
                 $ses_data = [ 
                     'id' => $data['id'],
                     'username' => $data['username'],
-                    'isLoggedIn' => TRUE
+                    'isLoggedIn' => TRUE,
+                    'usertype' => $data['usertype'],
                 ];
                 $session->set($ses_data);
-                return redirect()->to('/home');
+
+                if($data['usertype'] === 'admin'){
+                    return redirect()->to('/adminview');
+                } 
+                else if($data['usertype'] === 'user'){
+                    return redirect()->to('/home');
+                }
             }
             else{
                 $session->setFlashdata('msg', 'Password is incorrect.');
@@ -82,4 +124,49 @@ class UserController extends BaseController
                 return redirect()->to('/signin');
             }
         }
+        public function save()
+        {
+            $id =$_POST['id'];
+            $productData = [
+                'productName' => $this->request->getVar('productName'),
+                'productPrice' => $this->request->getVar('productPrice'),
+                'productImg' => $this->request->getVar('productImg'),
+                'productDescription' => $this->request->getVar('productDescription'),
+                'productCategory' => $this->request->getVar('productCategory'),
+                'productQuantity' => $this->request->getVar('productQuantity'),
+            ];
+
+            $product = new ProductModel();
+    
+                if($id != null)
+                    {
+
+                        $product->set($productData)->where('id', $id)->update();
+                    }
+                    else{
+                        $product->insert($productData);
+                    }
+                    return redirect()->to('/adminview');
+        }
+        public function edit($id)
+        {
+            $product = new ProductModel();
+            $data = [
+                'product' => $product->findAll(),
+                'pro' => $product->where('id', $id)->first(),
+            ];
+            if(!session()->get('isLoggedIn')){
+                return redirect()->to('/signin');
+            }
+            else{
+                return view('admin', $data);
+            }
+        }
+        public function delete($id)
+        {
+            $product = new ProductModel();
+            $product->delete($id);
+            return redirect()->to('/adminview');
+        }
+    
     }

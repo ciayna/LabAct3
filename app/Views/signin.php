@@ -18,18 +18,18 @@
               <!-- Sign In Form -->
               <form action="/LoginAuth" method="post">
                 <div class="form-floating mb-3">
-                  <input type="text" class="form-control" name="username" value="<?= set_value('username')?>">
+                  <input type="text" class="form-control" name="username" value="<?= set_value('username')?>" placeholder="username">
                   <label for="floatingInput">Username</label>
                 </div>
                 <div class="form-floating mb-3">
-                  <input type="password" class="form-control" name="password" >
+                  <input type="password" class="form-control" name="password" placeholder="Password">
                   <label for="floatingPassword">Password</label>
                 </div>
 
                 <div class="d-grid">
                   <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit">Sign in</button>
                   <div class="text-center">
-                    <a class="small" href="/signup">Don't have an account? Sign up</a>
+                    <a class="small" href="/registerview">Don't have an account? Sign up</a>
                   </div>
                 </div>
 
